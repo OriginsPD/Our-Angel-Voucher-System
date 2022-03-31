@@ -48,8 +48,8 @@ const AdminSideBar = () => {
 
     const navigation = [
         { name: 'Home', href: '/admin', icon: HomeIcon, current: true },
-        { name: 'History', href: '#', icon: ClockIcon, current: false },
-        { name: 'Parents', href: '#', icon: UserIcon, current: false },
+        // { name: 'History', href: '#', icon: ClockIcon, current: false },
+        // { name: 'Parents', href: '#', icon: UserIcon, current: false },
         { name: 'Issued', href: '/issue', icon: UserGroupIcon, current: false },
         { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
     ]
