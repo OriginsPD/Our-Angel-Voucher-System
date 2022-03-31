@@ -1,17 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App from './App'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
+
+// Context APIs
+import AuthContextProvider, { AuthContext } from './context/AuthContext';
+import ThemeContextProvider from './context/ThemeContext';
+import FormContextProvider from './context/FormContext';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    <React.StrictMode>
+        <Router>
+            <ThemeContextProvider>
+                <FormContextProvider>
+                    <AuthContextProvider>
+                        <Routes>
+                            <Route path='/*' element={<App />} />
+                        </Routes>
+                    </AuthContextProvider>
+                </FormContextProvider>
+            </ThemeContextProvider>
+        </Router>
+    </React.StrictMode>
+    , document.getElementById('root')
+)
