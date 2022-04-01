@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 
-import VoucherApi from '../api/VoucherApi'
+import useVoucherApi from '../api/VoucherApi'
 
 const SearchPortal = ({ show, toggle, close }) => {
-    const { indexVoucher, voucher } = VoucherApi()
-    const { findVoucher } = VoucherApi()
+    const { indexVoucher, voucher, findVoucher } = useVoucherApi()
 
     const [filterData, setFilterData] = useState([])
 
@@ -35,9 +34,9 @@ const SearchPortal = ({ show, toggle, close }) => {
 
     const operation = (id) => {
         toggle()
-        findVoucher(id)
         close()
-        console.log(id)
+        findVoucher(id)
+        // console.log(id)
     }
 
 
