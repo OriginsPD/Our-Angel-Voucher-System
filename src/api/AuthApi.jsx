@@ -19,7 +19,6 @@ function AuthApi() {
     const authLogin = async () => {
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
-        // myHeaders.append("Authorization", `Bearer ${token}`);
 
         const urlencoded = new URLSearchParams();
         urlencoded.append("email", credentials.email);
@@ -35,12 +34,16 @@ function AuthApi() {
         await fetch(`${accessPoint}/login`, requestOptions)
             .then(response => response.json())
             .then(data => getToken(data.body))
-            // .then(data => console.log(data.body.user.userType))
             .catch(error => console.log('error', error));
 
-        navigate('/Admin')
+        const authString = sessionStorage.getItem('AuthDetails');
+        const authInfo = (!authString)
+            ? 0
+            : JSON.parse(authString);
 
-        // navigate(from, { replace: true })
+        (authInfo.userType === 1)
+            ? navigate('/admin')
+            : navigate('/parent')
 
     }
 

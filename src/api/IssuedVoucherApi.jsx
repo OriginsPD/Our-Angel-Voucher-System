@@ -15,20 +15,22 @@ const IssuedVoucherApi = () => {
 
     const accessPoint = 'http://127.0.0.1:8000/api'
 
+    const updateToken = () => {
+        let newToken = ''
+        return newToken = JSON.parse(sessionStorage.getItem('token'))
+    }
+
     const configUri = {
         headers: {
             'Content-Type': 'application/json',
-            // 'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${updateToken()}`,
         }
     }
-
-    // console.log(queryId)
-
     const indexIssued = async () => {
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
-        myHeaders.append("Authorization", "Bearer 1|awk24MNd4I3dsvs04HDAwGBSSWlCCkAf2BHehZ8K");
+        myHeaders.append("Authorization", `Bearer ${updateToken()}`);
 
         const requestOptions = {
             method: 'GET',
@@ -36,7 +38,7 @@ const IssuedVoucherApi = () => {
             redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:8000/api/issue", requestOptions)
+        await fetch(`${accessPoint}/issue/`, requestOptions)
             .then(response => response.json())
             .then(result => setIssued(result))
             // .then(result => console.log(result))
@@ -65,7 +67,7 @@ const IssuedVoucherApi = () => {
             ...configUri
         })
             .then((res) => res.json())
-            .then((data) => editCredentials(data))
+            .then((data) => setIssued(data))
         // .then((data) => console.log(data))
 
 
@@ -74,17 +76,9 @@ const IssuedVoucherApi = () => {
 
     // Edit Issued Information
     const editIssued = async () => {
-        // await fetch(`${accessPoint}/issue/${queryId}`, {
-        //   method: 'PUT',
-        //   ...configUri,
-        //   body: JSON.stringify(credentials)
-        // }).then((res) => res.json())
-        //   .then((data) => console.log(data))
-
-
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
-        myHeaders.append("Authorization", "Bearer 1|awk24MNd4I3dsvs04HDAwGBSSWlCCkAf2BHehZ8K");
+        myHeaders.append("Authorization", `Bearer ${updateToken()}`);
 
         const urlencoded = new URLSearchParams();
         urlencoded.append("name", credentials.name);
@@ -100,7 +94,7 @@ const IssuedVoucherApi = () => {
 
         console.log(queryId)
 
-        fetch(`${accessPoint}/issue/${queryId}`, requestOptions)
+        await fetch(`${accessPoint}/issue/${queryId}`, requestOptions)
             .then(response => response.json())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));

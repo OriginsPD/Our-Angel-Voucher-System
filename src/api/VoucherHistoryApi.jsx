@@ -1,21 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 
 // Context Api
 import { FormContext } from '../context/FormContext';
 
+const VoucherHistoryApi = () => {
+    const { credentials, editCredentials } = useContext(FormContext)
 
-const UserApi = () => {
-    const { resetCredentials, changeMode, credentials, editCredentials } = useContext(FormContext)
-
-    const [user, setUser] = useState([])
-
-    const [queryId, setQueryId] = useState()
-
-    const [refresh, setRefresh] = useState(0)
-
-    const reloadIndex = () => {
-        setRefresh((perviousState) => perviousState + parseInt(1))
-    }
+    const [history, setHistory] = useState([])
 
     const accessPoint = 'http://127.0.0.1:8000/api'
 
@@ -27,14 +18,14 @@ const UserApi = () => {
     const configUri = {
         headers: {
             'Content-Type': 'application/json',
-            // 'Accept': 'application/json',
+            'Accept': 'application/json',
             'Authorization': `Bearer ${updateToken()}`,
         }
     }
 
-    const indexUser = async () => {
+    const indexHistory = async () => {
         const myHeaders = new Headers();
-        // myHeaders.append("Accept", "application/json");
+        myHeaders.append("Accept", "application/json");
         myHeaders.append("Authorization", `Bearer ${updateToken()}`);
 
         const requestOptions = {
@@ -43,20 +34,17 @@ const UserApi = () => {
             redirect: 'follow'
         };
 
-        await fetch("http://127.0.0.1:8000/api/guardian", requestOptions)
-            .then((response) => response.json())
-            .then((result) => setUser(result))
+        await fetch(`${accessPoint}/voucher-history`, requestOptions)
+            .then(response => response.json())
+            .then(result => setHistory(result))
             // .then(result => console.log(result))
             .catch(error => console.log('error', error));
 
-        // console.log(token)
-
-
     }
 
-    // Add New User Information
-    const addUser = async () => {
-        await fetch(`${accessPoint}/guardian`, {
+    // Add NewHistory Information
+    const addHistory = async () => {
+        await fetch(`${accessPoint}/voucher-history`, {
             method: 'POST',
             ...configUri,
             body: JSON.stringify(credentials)
@@ -66,11 +54,11 @@ const UserApi = () => {
 
     }
 
-    // Find User Information
-    const findUser = async (id) => {
-        setQueryId(id)
+    // FindHistory Information
+    const findHistory = async (id) => {
+        sessionStorage.setItem('queryId', id)
 
-        await fetch(`${accessPoint}/guardian/${id}`, {
+        await fetch(`${accessPoint}/voucher-history/${id}`, {
             method: 'GET',
             ...configUri
         })
@@ -79,11 +67,14 @@ const UserApi = () => {
         // .then((data) => console.log(data))
 
 
-
     }
 
-    // Edit User Information
-    const editUser = async () => {
+    // EditHistory Information
+    const editHistory = async () => {
+
+        let queryId = 0;
+        queryId = sessionStorage.getItem('queryId')
+
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Authorization", `Bearer ${updateToken()}`);
@@ -102,26 +93,25 @@ const UserApi = () => {
 
         console.log(queryId)
 
-        fetch(`${accessPoint}/guardian/${queryId}`, requestOptions)
+        await fetch(`${accessPoint}/voucher-history/${queryId}`, requestOptions)
             .then(response => response.json())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
 
-        reloadIndex()
+
     }
 
     const config = {
-        indexUser,
-        addUser,
-        findUser,
-        editUser,
-        user,
-        refresh
-
+        indexHistory: indexHistory,
+        addHistory: addHistory,
+        findHistory: findHistory,
+        editHistory: editHistory,
+        history
     }
+
 
     return { ...config }
 
 }
 
-export default UserApi
+export default VoucherHistoryApi

@@ -1,34 +1,36 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 // Context Api
-import FormContextProvider, { FormContext } from '../context/FormContext';
-import { AuthContext } from '../context/AuthContext';
+import { FormContext } from '../context/FormContext';
+
 
 
 const VoucherApi = () => {
   const { resetCredentials, changeMode, credentials, editCredentials } = useContext(FormContext)
-  const { token } = useContext(AuthContext)
-
 
   const [voucher, setVoucher] = useState([])
-  const [queryId, setQueryId] = useState()
+
+  const [refresh, setRefresh] = useState(0)
 
   const accessPoint = 'http://127.0.0.1:8000/api'
+
+  const updateToken = () => {
+    let newToken = ''
+    return newToken = JSON.parse(sessionStorage.getItem('token'))
+  }
 
   const configUri = {
     headers: {
       'Content-Type': 'application/json',
-      // 'Accept': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${updateToken()}`,
     }
   }
-
-  // console.log(queryId)
 
   const indexVoucher = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
-    myHeaders.append("Authorization", "Bearer 1|awk24MNd4I3dsvs04HDAwGBSSWlCCkAf2BHehZ8K");
+    myHeaders.append("Authorization", `Bearer ${updateToken()}`);
 
     const requestOptions = {
       method: 'GET',
@@ -36,7 +38,7 @@ const VoucherApi = () => {
       redirect: 'follow'
     };
 
-    fetch("http://127.0.0.1:8000/api/voucher", requestOptions)
+    await fetch(`${accessPoint}/voucher`, requestOptions)
       .then(response => response.json())
       .then(result => setVoucher(result))
       // .then(result => console.log(result))
@@ -58,7 +60,7 @@ const VoucherApi = () => {
 
   // Find Voucher Information
   const findVoucher = async (id) => {
-    setQueryId(id)
+    sessionStorage.setItem('queryId', id)
 
     await fetch(`${accessPoint}/voucher/${id}`, {
       method: 'GET',
@@ -69,22 +71,17 @@ const VoucherApi = () => {
     // .then((data) => console.log(data))
 
 
-
   }
 
   // Edit Voucher Information
   const editVoucher = async () => {
-    // await fetch(`${accessPoint}/voucher/${queryId}`, {
-    //   method: 'PUT',
-    //   ...configUri,
-    //   body: JSON.stringify(credentials)
-    // }).then((res) => res.json())
-    //   .then((data) => console.log(data))
 
+    let queryId = 0;
+    queryId = sessionStorage.getItem('queryId')
 
     const myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
-    myHeaders.append("Authorization", "Bearer 1|awk24MNd4I3dsvs04HDAwGBSSWlCCkAf2BHehZ8K");
+    myHeaders.append("Authorization", `Bearer ${updateToken()}`);
 
     const urlencoded = new URLSearchParams();
     urlencoded.append("name", credentials.name);
@@ -98,28 +95,26 @@ const VoucherApi = () => {
       redirect: 'follow'
     };
 
-    console.log(queryId)
+    // console.log(queryId)
 
-    fetch(`${accessPoint}/voucher/${queryId}`, requestOptions)
+    await fetch(`${accessPoint}/voucher/${queryId}`, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
 
+    setRefresh((perviousState) => perviousState + parseInt(1))
 
   }
 
   const config = {
-    indexVoucher,
-    addVoucher,
-    findVoucher,
-    editVoucher,
-    voucher
-
+    indexVoucher: indexVoucher,
+    addVoucher: addVoucher,
+    findVoucher: findVoucher,
+    editVoucher: editVoucher,
+    voucher,
+    refresh
   }
 
-  useEffect(() => {
-
-  }, [queryId])
 
   return { ...config }
 

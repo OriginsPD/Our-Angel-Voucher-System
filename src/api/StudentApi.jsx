@@ -1,24 +1,29 @@
 import React, { useState, useContext } from 'react';
 
 import { FormContext } from '../context/FormContext';
-import { AuthContext } from '../context/AuthContext';
+// import { AuthContext } from '../context/AuthContext';
 
 function StudentApi() {
     const { resetCredentials, changeMode, credentials, editCredentials } = useContext(FormContext)
-    const { token } = useContext(AuthContext)
-
-    const accessPoint = 'http://127.0.0.1:8000/api'
+    // const { token } = useContext(AuthContext)
 
     const [student, setStudent] = useState([])
     const [queryId, setQueryId] = useState(0)
 
     const [refreshVal, setRefreshVal] = useState(0);
 
+    const accessPoint = 'http://127.0.0.1:8000/api'
+
+    const updateToken = () => {
+        let newToken = ''
+        return newToken = JSON.parse(sessionStorage.getItem('token'))
+    }
+
     const configUri = {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${updateToken()}`,
         }
     }
 
@@ -49,7 +54,7 @@ function StudentApi() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${updateToken()}`
             },
             body: JSON.stringify(credentials)
         }).then((res) => res.json()
@@ -63,7 +68,7 @@ function StudentApi() {
         await fetch(`${accessPoint}/studentdir/${studentID}`, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${updateToken()}`
             },
         })
             .then((res) => res.json())
@@ -80,7 +85,7 @@ function StudentApi() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${updateToken()}`
             },
             body: JSON.stringify(credentials)
         })
@@ -95,7 +100,7 @@ function StudentApi() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${updateToken()}`
             },
         }).then((res) => res.json())
             .then((data) => console.log(data))

@@ -1,21 +1,16 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 // Context Api
 import { FormContext } from '../context/FormContext';
 
 
-const UserApi = () => {
+
+const RegisterStudentApi = () => {
     const { resetCredentials, changeMode, credentials, editCredentials } = useContext(FormContext)
 
-    const [user, setUser] = useState([])
-
-    const [queryId, setQueryId] = useState()
+    const [regStudent, setRegStudent] = useState([])
 
     const [refresh, setRefresh] = useState(0)
-
-    const reloadIndex = () => {
-        setRefresh((perviousState) => perviousState + parseInt(1))
-    }
 
     const accessPoint = 'http://127.0.0.1:8000/api'
 
@@ -27,14 +22,14 @@ const UserApi = () => {
     const configUri = {
         headers: {
             'Content-Type': 'application/json',
-            // 'Accept': 'application/json',
+            'Accept': 'application/json',
             'Authorization': `Bearer ${updateToken()}`,
         }
     }
 
-    const indexUser = async () => {
+    const indexRegStudent = async () => {
         const myHeaders = new Headers();
-        // myHeaders.append("Accept", "application/json");
+        myHeaders.append("Accept", "application/json");
         myHeaders.append("Authorization", `Bearer ${updateToken()}`);
 
         const requestOptions = {
@@ -43,20 +38,17 @@ const UserApi = () => {
             redirect: 'follow'
         };
 
-        await fetch("http://127.0.0.1:8000/api/guardian", requestOptions)
-            .then((response) => response.json())
-            .then((result) => setUser(result))
+        await fetch(`${accessPoint}/register-student`, requestOptions)
+            .then(response => response.json())
+            .then(result => setRegStudent(result))
             // .then(result => console.log(result))
             .catch(error => console.log('error', error));
 
-        // console.log(token)
-
-
     }
 
-    // Add New User Information
-    const addUser = async () => {
-        await fetch(`${accessPoint}/guardian`, {
+    // Add NewRegStudent Information
+    const addRegStudent = async () => {
+        await fetch(`${accessPoint}/register-student`, {
             method: 'POST',
             ...configUri,
             body: JSON.stringify(credentials)
@@ -66,24 +58,27 @@ const UserApi = () => {
 
     }
 
-    // Find User Information
-    const findUser = async (id) => {
-        setQueryId(id)
+    // FindRegStudent Information
+    const findRegStudent = async (id) => {
+        sessionStorage.setItem('queryId', id)
 
-        await fetch(`${accessPoint}/guardian/${id}`, {
+        await fetch(`${accessPoint}/register-student/${id}`, {
             method: 'GET',
             ...configUri
         })
             .then((res) => res.json())
-            .then((data) => editCredentials(data))
-        // .then((data) => console.log(data))
-
+            .then((data) => setRegStudent(data))
+            // .then((data) => console.log(data))
 
 
     }
 
-    // Edit User Information
-    const editUser = async () => {
+    // EditRegStudent Information
+    const editRegStudent = async () => {
+
+        let queryId = 0;
+        queryId = sessionStorage.getItem('queryId')
+
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Authorization", `Bearer ${updateToken()}`);
@@ -100,28 +95,29 @@ const UserApi = () => {
             redirect: 'follow'
         };
 
-        console.log(queryId)
+        // console.log(queryId)
 
-        fetch(`${accessPoint}/guardian/${queryId}`, requestOptions)
+        await fetch(`${accessPoint}/register-student/${queryId}`, requestOptions)
             .then(response => response.json())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
 
-        reloadIndex()
+        setRefresh((perviousState) => perviousState + parseInt(1))
+
     }
 
     const config = {
-        indexUser,
-        addUser,
-        findUser,
-        editUser,
-        user,
+        indexRegStudent: indexRegStudent,
+        addRegStudent: addRegStudent,
+        findRegStudent: findRegStudent,
+        editRegStudent: editRegStudent,
+        regStudent,
         refresh
-
     }
+
 
     return { ...config }
 
 }
 
-export default UserApi
+export default RegisterStudentApi
