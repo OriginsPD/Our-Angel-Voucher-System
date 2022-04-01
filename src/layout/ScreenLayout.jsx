@@ -8,12 +8,12 @@ const ScreenLayout = () => {
     const { isAuth } = useContext(AuthContext)
     return (
         <div>
-            {
+            {/* {
                 (isAuth) 
                 ? null
                     : <NavBar /> 
-            }
-            
+            } */}
+
             <Outlet />
         </div>
     )
