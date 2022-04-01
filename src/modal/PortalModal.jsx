@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 
-const LoginScreen = ({ show, toggle, schema, formType, formMode, formSubmit }) => {
+const LoginScreen = ({ show, toggle, schema, formType, formMode, formSubmit, formLabel }) => {
     const { storeInfo, resetCredentials } = useContext(FormContext)
     // const { authLogin } = AdminAuthApi()
 
@@ -53,7 +53,7 @@ const LoginScreen = ({ show, toggle, schema, formType, formMode, formSubmit }) =
                                             <div className="w-full border-t border-gray-300"></div>
                                         </div>
                                         <div className="relative flex justify-center text-sm">
-                                            <span className="px-2 bg-white text-gray-500">{(formMode) ? 'Login' : 'Register'}</span>
+                                            <span className="px-2 bg-white text-gray-500">{formLabel.name}</span>
                                         </div>
                                     </div>
 
@@ -74,7 +74,7 @@ const LoginScreen = ({ show, toggle, schema, formType, formMode, formSubmit }) =
 
                                             <div className='flex space-x-2'>
                                                 <button onClick={cancelToggle} className="w-full flex justify-center py-2 px-4 border border rounded-md shadow-sm text-sm font-medium text-indigo bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Cancel</button>
-                                                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</button>
+                                                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{formLabel.button}</button>
                                             </div>
 
                                         </form>
