@@ -63,7 +63,7 @@ const AuthContextProvider = ({ children }) => {
         // Roles
     }
 
-    // console.log(token)
+    // console.log(authInfo)
 
     useEffect(() => {
         (token !== 0)

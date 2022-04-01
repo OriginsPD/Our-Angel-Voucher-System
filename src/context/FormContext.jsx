@@ -21,11 +21,13 @@ const FormContextProvider = ({ children }) => {
         confirmPassword: '',
         price: '',
         quantity: '',
-        name: ''
+        name: '',
+        id: ''
     })
 
     const resetCredentials = () => {
-        setCredentials({
+        setCredentials((perviousState) => ({
+            ...perviousState,
             username: '',
             dob: '',
             firstName: '',
@@ -37,8 +39,9 @@ const FormContextProvider = ({ children }) => {
             confirmPassword: '',
             price: '',
             quantity: '',
-            name: ''
-        })
+            name: '',
+            id: ''
+        }))
 
     }
 
@@ -73,6 +76,13 @@ const FormContextProvider = ({ children }) => {
         { id: 3, type: 'number', name: 'price', label: 'Total Price', value: credentials.price },
     ]
 
+    const OrderVoucherForm = [
+        { id: 2, type: 'select', name: 'name', label: 'Voucher Name', value: credentials.name },
+        { id: 1, type: 'select', name: 'id', label: 'Student Name', value: credentials.id },
+        { id: 3, type: 'number', name: 'quantity', label: 'Quantity', value: credentials.quantity },
+        // { id: 4, type: 'number', name: 'price', label: 'Total Price', value: credentials.price },
+    ]
+
     // console.log(CreateVoucherForm)
 
 
@@ -82,7 +92,7 @@ const FormContextProvider = ({ children }) => {
             ...previousState,
             [name]: value
         }))
-        // console.log(credentials)
+        console.log(credentials)
     }
 
     const changeMode = () => {
@@ -101,7 +111,8 @@ const FormContextProvider = ({ children }) => {
         storeInfo: storeInfo,
         LoginForm,
         SignUpForm,
-        CreateVoucherForm
+        CreateVoucherForm,
+        OrderVoucherForm
 
     }
 
