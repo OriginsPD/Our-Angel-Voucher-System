@@ -29,13 +29,19 @@ const AdminFormConfig = () => {
     // const formType = (formMode) ? LoginForm : SignUpForm
     // const formSubmit = (formMode) => 
 
+    const formLabel = {
+        name: (formMode) ? 'Create Voucher' : 'Edit Voucher',
+        button: (formMode) ? 'Create' : 'Update'
+    }
+
     const configModal = {
         show: openModal,
         toggle: toggle,
         schema,
         formType: CreateVoucherForm,
         formMode: formMode,
-        formSubmit: (formMode) ? addVoucher : editVoucher
+        formSubmit: (formMode) ? addVoucher : editVoucher,
+        formLabel
     }
 
 

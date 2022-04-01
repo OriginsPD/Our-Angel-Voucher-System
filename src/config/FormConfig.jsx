@@ -30,6 +30,11 @@ const FormConfig = () => {
 
     const { toggle, openModal } = ToggleModal()
 
+    const formLabel = {
+        name: (formMode) ? 'Login' : 'Register',
+        button: (formMode) ? 'Login' : 'Register Now'
+    }
+
     const schemaState = (formMode) ? schemaLogin : schemaRegister
     const formType = (formMode) ? LoginForm : SignUpForm
     // const formSubmit = (formMode) => 
@@ -40,7 +45,8 @@ const FormConfig = () => {
         schema: schemaState,
         formType: formType,
         formMode: formMode,
-        formSubmit: (formMode) ? authLogin : authSignUp
+        formSubmit: (formMode) ? authLogin : authSignUp,
+        formLabel
     }
 
 
