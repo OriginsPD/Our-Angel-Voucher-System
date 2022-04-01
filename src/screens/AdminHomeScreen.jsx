@@ -40,7 +40,6 @@ const AdminScreen = () => {
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{items.username}</td>
                                                         {items.guardian.map((innerArr) => {
                                                             return (
-
                                                                 innerArr.registered_students.map((deepArr) => {
                                                                     return (
                                                                         <td key={deepArr.id} className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6">
@@ -58,12 +57,13 @@ const AdminScreen = () => {
                                                                 </td>
                                                             )
                                                         })}
+
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{items.email}</td>
 
                                                     </tr>
                                                 )
                                             })
-                                            : <td colSpan={4} className="whitespace-nowrap px-3 text-center py-4 text-sm text-gray-500"> No Data Found </td>
+                                            : <tr> <td colSpan={4} className="whitespace-nowrap px-3 text-center py-4 text-sm text-gray-500"> No Data Found </td></tr>
                                     }
                                 </tbody>
                             </table>

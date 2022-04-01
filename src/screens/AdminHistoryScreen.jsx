@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import IssuedVoucherApi from '../api/IssuedVoucherApi';
 
-const AdminIssuedScreen = () => {
+import VoucherHistoryApi from '../api/VoucherHistoryApi';
 
-    const { issued, indexIssued } = IssuedVoucherApi()
+const AdminHistoryScreen = () => {
+
+    const { history, indexHistory } = VoucherHistoryApi()
 
     useEffect(() => {
-        indexIssued()
+        indexHistory()
     }, [])
 
     return (
         <div className="p-4 sm:p-6 w-full h-screen overflow-auto lg:p-8">
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
-                    <h1 className="text-xl font-semibold text-gray-900">Voucher Issued</h1>
-                    <p className="mt-2 text-sm text-gray-700">A list of all the voucher current issued.</p>
+                    <h1 className="text-xl font-semibold text-gray-900">Voucher History</h1>
+                    <p className="mt-2 text-sm text-gray-700">A list of all the parents whose account including their name, phone number and email.</p>
                 </div>
 
             </div>
@@ -34,8 +35,8 @@ const AdminIssuedScreen = () => {
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
                                     {
-                                        (issued.length !== 0)
-                                            ? issued.map((items) => {
+                                        (history.length !== 0)
+                                            ? history.map((items) => {
                                                 return (
                                                     <tr key={items.id}>
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900">{items.student_reg_id}</td>
@@ -64,4 +65,4 @@ const AdminIssuedScreen = () => {
     )
 }
 
-export default AdminIssuedScreen
+export default AdminHistoryScreen
