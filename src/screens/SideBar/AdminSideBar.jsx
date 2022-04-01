@@ -27,7 +27,7 @@ import {
     PlusCircleIcon,
     UserGroupIcon,
     LogoutIcon,
-    XIcon,
+    TicketIcon,
 } from '@heroicons/react/outline'
 
 import {
@@ -47,11 +47,11 @@ const AdminSideBar = () => {
     const { configModal, toggleCreate, toggleEdit } = AdminFormConfig()
 
     const navigation = [
-        { name: 'Home', href: '/admin', icon: HomeIcon, current: true },
+        { name: 'Home', href: '/admin', icon: HomeIcon },
         // { name: 'History', href: '#', icon: ClockIcon, current: false },
-        // { name: 'Parents', href: '#', icon: UserIcon, current: false },
-        { name: 'Issued', href: '/issue', icon: UserGroupIcon, current: false },
-        { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
+        { name: 'Voucher', href: '/voucher', icon: TicketIcon },
+        { name: 'Issued', href: '/issue', icon: UserGroupIcon },
+        { name: 'Reports', href: '/history', icon: DocumentReportIcon },
     ]
 
     const secondaryNavigation = [
@@ -86,10 +86,7 @@ const AdminSideBar = () => {
                             <NavLink
                                 key={item.name}
                                 to={item.href}
-                                className={classNames(
-                                    item.current ? 'bg-cyan-800 text-white' : 'text-cyan-100 hover:text-white hover:bg-cyan-600',
-                                    'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                                )}
+                                className={({ isActive }) => ' group flex items-center px-2 py-2 text-base font-medium rounded-md ' + ((isActive) ? 'bg-cyan-800 text-white' : 'text-cyan-100 hover:text-white hover:bg-cyan-600')}
                                 aria-current={item.current ? 'page' : undefined}
                             >
                                 <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200" aria-hidden="true" />
